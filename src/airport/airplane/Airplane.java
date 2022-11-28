@@ -6,6 +6,7 @@ public class Airplane {
     private int currentPassengers = 0;
     private boolean isFlying = false;
     private int cruiseSpeed = 0;
+    private int capacity = maxPassengers - currentPassengers;
 
     public String getPlaneIdentification() {
         return planeIdentification;
@@ -15,9 +16,30 @@ public class Airplane {
         return maxPassengers;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
+
+    public int getCurrentPassengers() {
+        return currentPassengers;
+    }
+
+    public boolean getIsFlying() {
+        return isFlying;
+    }
+
     public void loadPassengers(int numPassengers) {
-        this.currentPassengers += numPassengers;
-        System.out.println(this.getPlaneIdentification() + " has loaded " + numPassengers + " passengers.");
+        if (this.currentPassengers + numPassengers <= this.maxPassengers) {
+            this.currentPassengers += numPassengers;
+            System.out.println(this.getPlaneIdentification() + " has loaded " + numPassengers + " passengers.");
+        }
+        else if (this.currentPassengers + numPassengers > this.maxPassengers) {
+            int excess = (this.currentPassengers + numPassengers - this.maxPassengers);
+            int loaded = (this.maxPassengers - this.currentPassengers);
+            this.currentPassengers = this.maxPassengers;
+            System.out.println(this.getPlaneIdentification() +  " loaded " + loaded + " passengers, " + excess + " passengers didn't fit.");
+        };
     }
 
     public void unloadPassengers(int numPassengers) {
@@ -26,8 +48,12 @@ public class Airplane {
     }
 
     public void takeOff() {
-        this.isFlying = true;
-        System.out.println(this.getPlaneIdentification() + " has taken off.");
+        if (this.isFlying == true) {
+            System.out.println(this.planeIdentification + " is already in the air!");
+        } else {
+            this.isFlying = true;
+            System.out.println(this.getPlaneIdentification() + " has taken off.");
+        }
     }
 
     public void land() {
@@ -35,7 +61,8 @@ public class Airplane {
         System.out.println(this.getPlaneIdentification() + " has landed.");
     }
 
-    public Airplane(String identification){
+    public Airplane(String identification, int maxPassengers){
         this.planeIdentification = identification;
+        this.maxPassengers = maxPassengers;
     }
 }
